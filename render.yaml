@@ -1,0 +1,36 @@
+services:
+  - type: web
+    name: healthfit-backend
+    env: node
+    plan: free
+    # Assumption: You are uploading the 'backend' folder as the root of your repo.
+    # If 'backend' is a subfolder in your repo, change to 'root: backend'
+    buildCommand: npm install && npx prisma generate && tsc
+    startCommand: node dist/index.js
+    envVars:
+      # Database Connection
+      - key: DATABASE_URL
+        sync: false
+      - key: DIRECT_URL
+        sync: false
+      
+      # Supabase Configuration (REQUIRED for auth middleware)
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      
+      # AI API Keys
+      - key: GROQ_API_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      
+      # Server Configuration
+      - key: PORT
+        value: 3001
+      - key: NODE_ENV
+        value: production
+
